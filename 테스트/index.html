@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>수학 탐정 아카이브: 집합의 비밀을 풀어라!</title>
+  <meta name="description" content="고등학교 1학년 수학 집합 단원을 재미있게 마스터하는 미스터리 탐정 방탈출 웹앱">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 배경 시각 효과 -->
+  <div class="bg-grid"></div>
+  <div class="glow-orb orb-1"></div>
+  <div class="glow-orb orb-2"></div>
+
+  <!-- 메인 컨테이너 -->
+  <main class="app-container">
+    
+    <!-- ==================== 1. 시작 화면 ==================== -->
+    <section id="screen-intro" class="screen active">
+      <div class="detective-badge">
+        <span class="badge-icon">🕵️‍♂️</span>
+        <span class="badge-text">SECRET MATH ARCHIVE</span>
+      </div>
+      
+      <h1 class="main-title">
+        수학 탐정 아카이브<br>
+        <span class="highlight-text">집합의 비밀을 풀어라!</span>
+      </h1>
+      
+      <p class="intro-desc">
+        비밀 연구소의 보안 시스템이 작동하여 문이 잠겼습니다.<br>
+        <strong>4개의 암호 방</strong>을 통과하여 최종 마스터 키를 획득하고 탈출하세요!
+      </p>
+
+      <div class="mission-brief-card">
+        <h3 class="card-title">📁 탐정 브리핑 & 작전 규칙</h3>
+        <ul class="rule-list">
+          <li><strong>제1관:</strong> 집합과 원소 기호 해독 ($\in, \notin$)</li>
+          <li><strong>제2관:</strong> 부분집합의 비밀 서재 ($\subset, 2^n$)</li>
+          <li><strong>제3관:</strong> 교집합과 합집합의 게이트 ($\cap, \cup$)</li>
+          <li><strong>제4관:</strong> 여집합과 차집합의 최종 금고 ($A^c, A-B$)</li>
+        </ul>
+        <div class="rule-tip">
+          💡 문제를 풀기 어렵다면 <strong>[💡 비밀 단서 쪽지]</strong>를 클릭하세요. 친절한 힌트가 숨겨져 있습니다!
+        </div>
+      </div>
+
+      <div class="start-form-box">
+        <label for="student-name-input" class="input-label">탐정 코드명 (이름 또는 별명):</label>
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="student-name-input" 
+            placeholder="예: 1학년 3반 홍길동" 
+            maxlength="15"
+            autocomplete="off"
+          >
+          <button id="btn-start-game" class="btn btn-primary">
+            <span>사건 파일 열기</span>
+            <span class="btn-arrow">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. 방탈출 게임 화면 ==================== -->
+    <section id="screen-game" class="screen">
+      <!-- 상단 상태바 -->
+      <header class="game-header">
+        <div class="stage-info">
+          <span class="stage-tag" id="stage-badge">제1관</span>
+          <span class="stage-title-text" id="stage-name-display">집합의 발견</span>
+        </div>
+        
+        <div class="status-items">
+          <div class="timer-box" title="경과 시간">
+            <span class="status-icon">⏱️</span>
+            <span id="timer-display" class="mono-num">00:00</span>
+          </div>
+          <div class="hearts-box" title="남은 기회">
+            <span id="hearts-display">❤️❤️❤️</span>
+          </div>
+          <button id="btn-sound-toggle" class="btn-icon" title="효과음 켜기/끄기">
+            <span id="sound-icon">🔊</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 단계 진행 바 -->
+      <div class="progress-bar-container">
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-steps" id="progress-steps">
+          <div class="step-dot active" data-step="1">1관</div>
+          <div class="step-dot" data-step="2">2관</div>
+          <div class="step-dot" data-step="3">3관</div>
+          <div class="step-dot" data-step="4">4관</div>
+        </div>
+      </div>
+
+      <!-- 메인 룸 카드 -->
+      <div class="room-card" id="room-card">
+        <!-- 룸 스토리 대사창 -->
+        <div class="story-dialog">
+          <div class="speaker-avatar">🕵️</div>
+          <div class="speaker-bubble" id="story-text">
+            연구소의 첫 번째 보안문입니다. 벽에 적힌 암호를 해독하세요.
+          </div>
+        </div>
+
+        <!-- 단서 및 문제 영역 -->
+        <div class="puzzle-area">
+          <div class="clue-box" id="clue-content">
+            <!-- 자바스크립트로 문제 및 다이어그램 동적 주입 -->
+          </div>
+
+          <!-- SOS 힌트 버튼 -->
+          <div class="hint-trigger-row">
+            <button id="btn-open-hint" class="btn btn-hint">
+              <span>💡 비밀 단서 쪽지 열기 (SOS 힌트)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 잠금장치 입력 영역 -->
+        <div class="lock-mechanism-box">
+          <div class="lock-header">
+            <div class="lock-icon-wrap" id="lock-icon-wrap">
+              <span class="lock-icon" id="lock-icon">🔒</span>
+            </div>
+            <span class="lock-label">디지털 자물쇠 암호 해독</span>
+          </div>
+
+          <!-- 입력된 번호 디스플레이 -->
+          <div class="code-display-wrap">
+            <div class="code-slots" id="code-slots">
+              <span class="slot empty">_</span>
+              <span class="slot empty">_</span>
+            </div>
+            <div class="code-message" id="code-message">자물쇠에 암호 숫자를 입력하세요.</div>
+          </div>
+
+          <!-- 인터랙티브 키패드 -->
+          <div class="keypad-grid">
+            <button class="key-btn" data-key="1">1</button>
+            <button class="key-btn" data-key="2">2</button>
+            <button class="key-btn" data-key="3">3</button>
+            <button class="key-btn" data-key="4">4</button>
+            <button class="key-btn" data-key="5">5</button>
+            <button class="key-btn" data-key="6">6</button>
+            <button class="key-btn" data-key="7">7</button>
+            <button class="key-btn" data-key="8">8</button>
+            <button class="key-btn" data-key="9">9</button>
+            <button class="key-btn action-key clear-key" id="btn-clear-key">초기화</button>
+            <button class="key-btn" data-key="0">0</button>
+            <button class="key-btn action-key backspace-key" id="btn-backspace-key">⌫</button>
+          </div>
+
+          <!-- 자물쇠 해제 시도 버튼 -->
+          <button id="btn-submit-code" class="btn btn-unlock">
+            <span>🔓 잠금 해제 시도</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. 탈출 성공 및 인증서 화면 ==================== -->
+    <section id="screen-success" class="screen">
+      <!-- 캔버스 폭죽 효과 -->
+      <canvas id="confetti-canvas"></canvas>
+
+      <div class="success-card">
+        <div class="trophy-badge">🏆</div>
+        <h2 class="success-title">탈출에 성공했습니다!</h2>
+        <p class="success-subtitle">비밀 수학 연구소의 모든 집합 암호를 해독했습니다.</p>
+
+        <!-- 탐정 공식 탈출 인증서 -->
+        <div class="certificate-card" id="certificate-card">
+          <div class="cert-header">
+            <span class="cert-seal">MATHEMATICAL SOCIETY</span>
+            <span class="cert-no" id="cert-no">NO. SET-2026-001</span>
+          </div>
+          <h3 class="cert-title">공식 수학 탐정 인증서</h3>
+          <p class="cert-recipient">
+            탐정 코드명: <strong id="cert-name" class="highlight-name">탐정 홍길동</strong> 귀하
+          </p>
+          <div class="cert-stats">
+            <div class="stat-pill">
+              <span class="stat-label">탈출 소요 시간</span>
+              <span class="stat-value mono-num" id="cert-time">03:45</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-label">남은 하트</span>
+              <span class="stat-value" id="cert-hearts">❤️❤️❤️</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-label">최종 탐정 등급</span>
+              <span class="stat-value grade-s" id="cert-grade">S 등급 (집합의 마스터)</span>
+            </div>
+          </div>
+          <p class="cert-body">
+            위 학생은 고등학교 1학년 집합 단원의 핵심 개념(집합과 원소, 부분집합, 합집합, 교집합, 여집합, 차집합)을 완벽히 정복하였음을 증명합니다.
+          </p>
+          <div class="cert-footer">
+            <span class="cert-date" id="cert-date">2026년 10월 15일</span>
+            <span class="cert-sign">고등학교 수학 탐정 아카이브 연구소장 ㊞</span>
+          </div>
+        </div>
+
+        <!-- 하단 액션 버튼들 -->
+        <div class="success-actions">
+          <button id="btn-capture-cert" class="btn btn-secondary">
+            <span>🖨️ 인증서 인쇄 / 저장</span>
+          </button>
+          <button id="btn-restart-game" class="btn btn-primary">
+            <span>🔄 다시 도전하기</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 4. SOS 힌트 모달창 ==================== -->
+  <div id="hint-modal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="hint-icon">📜</span>
+          <h3 class="modal-title">비밀 단서 쪽지 (SOS 힌트)</h3>
+        </div>
+        <button id="btn-close-hint" class="btn-close">&times;</button>
+      </div>
+      <div class="modal-body" id="hint-body">
+        <!-- 힌트 내용 동적 주입 -->
+      </div>
+      <div class="modal-footer">
+        <button id="btn-confirm-hint" class="btn btn-hint-confirm">이해했습니다, 암호 풀러 가기!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스크립트 연결 (상대 경로) -->
+  <script src="app.js"></script>
+</body>
+</html>
